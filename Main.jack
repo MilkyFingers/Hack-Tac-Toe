@@ -1,0 +1,73 @@
+class Main
+
+{
+    function void main()
+    
+    {
+        var Player player1;
+        var Player player2;
+        var Board game;
+        var int turn;
+        var String instructions;
+        var int move;
+        var int winner;
+
+        let instructions = "Choose a location (0-8)";
+        do Output.moveCursor(12,5);
+        do Output.printString(instructions);
+        let player1 = Player.new();
+        let player2 = Player.new();
+        let game = Board.new();
+        let turn = 1;
+
+        while (game.isWinner() = 0)
+
+        {
+           if (turn = 1)
+            {
+                let move = player1.makeMove();
+                if (game.isCellFree(move))
+                {
+                    do game.drawX(move);
+                    let turn = 2;
+                }
+            }
+
+            else
+            {
+                let move = player2.makeMove();
+                if (game.isCellFree(move))
+                {
+                    do game.drawO(move);
+                    let turn = 1;
+                }
+            }
+        }
+
+        let winner = game.isWinner();
+
+        if (winner = 1)
+        {
+            let instructions = "PLAYER  1   WINS ! ! ! ";
+            do Output.moveCursor(12,5);
+            do Output.printString(instructions);
+        }
+
+        if (winner = 2)
+        {
+            let instructions = "PLAYER  2   WINS ! ! ! ";
+            do Output.moveCursor(12,5);
+            do Output.printString(instructions);           
+        }
+
+        if (winner = -1)
+        {
+            let instructions = "THE  GAME  IS  A  DRAW ! ! ! ";
+            do Output.moveCursor(12,5);
+            do Output.printString(instructions);           
+        }
+
+        return;
+    }
+
+}

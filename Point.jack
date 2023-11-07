@@ -1,0 +1,34 @@
+//* This is a helper class to define points on the screen as (x,y) pairs */
+
+class Point
+
+{
+    field int x, y;
+
+    constructor Point new(int Px, int Py)
+
+    {
+        let x = Px;
+        let y = Py;
+        return this;
+    }
+
+    method void dispose()
+
+    {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int getX()
+
+    {
+        return x;
+    }
+
+    method int getY()
+
+    {
+        return y;
+    }
+}

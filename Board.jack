@@ -1,0 +1,322 @@
+//* This class will handle drawing the board, checking it's state */
+
+class Board
+
+{
+    // These will be the location of the boards top left corner set to (157, 29) by default
+    field int x, y;
+    // This array will contain the values of the middle of each 50x50 cell
+    field Array boardCells;
+    // This array will contain boolean values representing the availibility of a board cell
+    field Array cellStatus;
+    // This array will keep track of which player has used what cell. 1 for x, 2 for o, 0 otherwise
+    field Array cellTakenBy;
+
+    //* Constructs a board on the screen with the top left corner at x,y */
+    constructor Board new()
+    
+    {
+        var int i;
+        let x = 300;
+        let y = 29;
+        let boardCells = Array.new(9);
+        let cellStatus = Array.new(9);
+        let cellTakenBy = Array.new(9);
+        // Set all cells to true at the start  of the game
+        let i = 0;
+        while (i < 9)
+        {
+            let cellStatus[i] = true;
+            let cellTakenBy[i] = 0;
+            let i = i + 1;
+        }
+        // Here we define the middle pixel values of each (50x50) cell on the board
+        let boardCells[0] = Point.new(x + 30, y + 30);
+        let boardCells[1] = Point.new(x + 100, y + 30);
+        let boardCells[2] = Point.new(x + 170, y + 30);
+        let boardCells[3] = Point.new(x + 30, y + 100);
+        let boardCells[4] = Point.new(x + 100, y + 100);
+        let boardCells[5] = Point.new(x + 170, y + 100);
+        let boardCells[6] = Point.new(x + 30, y + 170);
+        let boardCells[7] = Point.new(x + 100, y + 170);
+        let boardCells[8] = Point.new(x + 170, y + 170);
+        do draw();
+        return this;
+    }
+
+    //* Disposes this board */
+    method void dispose()
+
+    {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //* Draws the sqaure to the screen */
+    method void draw()
+
+    {
+        do Screen.setColor(true);
+        //* The following calls will draw the 4 rectangles of the board. 
+        do Screen.drawRectangle(x + 60, y, x + 70, y + 200);
+        do Screen.drawRectangle(x + 130, y, x + 140, y + 200);
+        do Screen.drawRectangle(x, y + 60, x + 200, y + 70);
+        do Screen.drawRectangle(x, y + 130, x + 200, y + 140);
+        return;
+    }
+
+    //* This will draw an 'X' in the given cell location */
+    method void drawX(int cell) 
+
+    {
+        var Point p;
+        var int mX, mY;
+        let p = boardCells[cell];
+        let mX = p.getX();
+        let mY = p.getY();
+        do p.dispose();
+        // Next we draw 4 lines from the middle outwards to the corners
+        do Screen.setColor(true);
+        // top left
+        do Screen.drawLine(mX, mY, mX - 20, mY - 20);
+        // top right
+        do Screen.drawLine(mX, mY, mX + 20, mY - 20);
+        // bottom left
+        do Screen.drawLine(mX, mY, mX - 20, mY + 20);
+        // bottom right
+        do Screen.drawLine(mX, mY, mX + 20, mY + 20);
+        let cellTakenBy[cell] = 1;
+        let cellStatus[cell] = false;
+        return;
+    }
+
+    //* This will draw a 'O' in the given cell location */
+    method void drawO(int cell)
+
+    {
+        var Point p;
+        var int mX, mY;
+        let p = boardCells[cell];
+        let mX = p.getX();
+        let mY = p.getY();
+        do p.dispose();
+        // first draw a black circle centred at mX, mY
+        do Screen.setColor(true);
+        do Screen.drawCircle(mX, mY, 25);
+        // next draw a concentric white circle, leaving a black outline
+        do Screen.setColor(false);
+        do Screen.drawCircle(mX, mY, 24);
+        let cellTakenBy[cell] = 2;
+        let cellStatus[cell] = false;
+        return;
+    }
+
+    //* This method will return true if cell is free, false otherwise */
+    method boolean isCellFree(int cell)
+
+    {
+        return (cellStatus[cell]);
+    }
+
+    //* checks to see if the board is full */
+    method boolean isFull()
+    {
+        var boolean isF;
+        var int i;
+        let i = 0;
+        let isF = true;
+        while (i < 9)
+        {
+            if (cellStatus[i])
+            {
+                let isF = false;
+            }
+            let i = i + 1;
+        }
+        return isF;
+    }
+
+    //* This method checks the cellTakenBy Array for a game-ending condition (win or draw) 1 for x win, 2 for 0, -1 for draw, 0 otherwose*/
+    method int isWinner()
+
+    {
+        // There are 8 possibilities for each player and there is no way to combine logical statements in Jack so...
+
+        // check for player 1 win
+        if (cellTakenBy[4] = 1)
+        {
+            // centre win
+            if (cellTakenBy[1] = 1)
+            {
+                if (cellTakenBy[7] = 1)
+                {
+                    return 1;
+                }
+            }
+
+            // centre win
+            if (cellTakenBy[3]  = 1)
+            {
+                if (cellTakenBy[5] = 1)
+                {
+                    return 1;
+                }
+            }
+
+            // diagnol win
+            if (cellTakenBy[0] = 1)
+            {
+                if (cellTakenBy[8] = 1)
+                {
+                    return 1;
+                }
+            }
+
+            // diagonal win
+            if (cellTakenBy[2] = 1)
+            {
+                if (cellTakenBy[6] = 1)
+                {
+                    return 1;
+                }
+            }
+        }
+
+        if (cellTakenBy[0] = 1)
+        {
+            // top row win
+            if (cellTakenBy[1] = 1)
+            {
+                if (cellTakenBy[2] = 1)
+                {
+                    return 1;
+                }
+            }
+
+            // left column win
+            if (cellTakenBy[3] = 1)
+            {
+                if (cellTakenBy[6] = 1)
+                {
+                    return 1;
+                }
+            }
+        }
+
+        if (cellTakenBy[8] = 1)
+        {
+            // bottom row win
+            if (cellTakenBy[7] = 1)
+            {
+                if (cellTakenBy[6] = 1)
+                {
+                    return 1;
+                }
+            }
+
+            // right column win
+            if (cellTakenBy[5] = 1)
+            {
+                if (cellTakenBy[2] = 1)
+                {
+                    return 1;
+                }
+            }
+        }
+
+        // check for player 2 win
+        if (cellTakenBy[4] = 2)
+        {
+            // centre win
+            if (cellTakenBy[1] = 2)
+            {
+                if (cellTakenBy[7] = 2)
+                {
+                    return 2;
+                }
+            }
+
+            // centre win
+            if (cellTakenBy[3]  = 2)
+            {
+                if (cellTakenBy[5] = 2)
+                {
+                    return 2;
+                }
+            }
+
+            // diagnol win
+            if (cellTakenBy[0] = 2)
+            {
+                if (cellTakenBy[8] = 2)
+                {
+                    return 2;
+                }
+            }
+
+            // diagonal win
+            if (cellTakenBy[2] = 2)
+            {
+                if (cellTakenBy[6] = 2)
+                {
+                    return 2;
+                }
+            }
+        }
+
+        if (cellTakenBy[0] = 2)
+        {
+            // top row win
+            if (cellTakenBy[1] = 2)
+            {
+                if (cellTakenBy[2] = 2)
+                {
+                    return 2;
+                }
+            }
+
+            // left column win
+            if (cellTakenBy[3] = 2)
+            {
+                if (cellTakenBy[6] = 2)
+                {
+                    return 2;
+                }
+            }
+        }
+
+        if (cellTakenBy[8] = 2)
+        {
+            // bottom row win
+            if (cellTakenBy[7] = 2)
+            {
+                if (cellTakenBy[6] = 2)
+                {
+                    return 2;
+                }
+            }
+
+            // right column win
+            if (cellTakenBy[5] = 2)
+            {
+                if (cellTakenBy[2] = 2)
+                {
+                    return 2;
+                }
+            }
+        }
+
+        // lastly check for a draw
+
+        if (isFull())
+        {
+            return -1;
+        }
+
+        else
+        {
+            return 0;
+        }
+    }
+    
+}

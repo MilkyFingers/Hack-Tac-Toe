@@ -1,0 +1,65 @@
+/* This player class will contain
+   Their player symbol ('X' or 'O') and take their input for their move */
+
+class Player
+
+{
+    field int move;
+    field char key;
+
+    constructor Player new()
+
+    {
+        return this;
+    }
+
+    method int makeMove()
+
+    {
+        let move = -1;
+        while (move = -1)
+        {
+            let key = Keyboard.keyPressed();
+            // The player entered move 0
+            if (key = 48)
+            {
+                let move = 0;
+            }
+            // The player entered move 1
+            if (key = 49)
+            {
+                let move = 1;
+            }
+            if (key = 50)
+            {
+                let move = 2;
+            }
+            if (key = 51)
+            {
+                let move = 3;
+            }
+            if (key = 52)
+            {
+                let move = 4;
+            }
+            if (key = 53)
+            {
+                let move = 5;
+            }
+            if (key = 54)
+            {
+                let move = 6;
+            }
+            if (key = 55)
+            {
+                let move = 7;
+            }
+            if (key = 56)
+            {
+                let move = 8;
+            }
+        }
+
+        return move;
+    }
+}
