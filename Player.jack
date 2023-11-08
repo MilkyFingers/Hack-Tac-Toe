@@ -1,10 +1,12 @@
-/* This player class will contain
-   Their player symbol ('X' or 'O') and take their input for their move */
+/* This player class will contain a single method to take input from the player. 
+   Input will not be accepted until it is in a valid range. */
 
 class Player
 
 {
+    // move will be returned 
     field int move;
+    // will be assigned the value of the key pressed
     field char key;
 
     constructor Player new()
@@ -30,10 +32,12 @@ class Player
             {
                 let move = 1;
             }
+            // The player entered move 2
             if (key = 50)
             {
                 let move = 2;
             }
+            // ...
             if (key = 51)
             {
                 let move = 3;

@@ -72,6 +72,7 @@ class Board
         var Point p;
         var int mX, mY;
         let p = boardCells[cell];
+        // Get the values of the middle of the cell
         let mX = p.getX();
         let mY = p.getY();
         do p.dispose();
@@ -85,7 +86,9 @@ class Board
         do Screen.drawLine(mX, mY, mX - 20, mY + 20);
         // bottom right
         do Screen.drawLine(mX, mY, mX + 20, mY + 20);
+        // set this cell to 1 for x
         let cellTakenBy[cell] = 1;
+        // no longer available 
         let cellStatus[cell] = false;
         return;
     }
@@ -136,7 +139,7 @@ class Board
         return isF;
     }
 
-    //* This method checks the cellTakenBy Array for a game-ending condition (win or draw) 1 for x win, 2 for 0, -1 for draw, 0 otherwose*/
+    //* This method checks the cellTakenBy Array for a game-ending condition (win or draw) 1 for x win, 2 for 0, -1 for draw, 0 otherwise*/
     method int isWinner()
 
     {

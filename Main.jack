@@ -8,6 +8,7 @@ class Main
         var Player player2;
         var Board game;
         var int turn;
+        // this string will be used to print messages to the screen
         var String instructions;
         var int move;
         var int winner;
@@ -20,12 +21,15 @@ class Main
         let game = Board.new();
         let turn = 1;
 
+        // We want this game loop to run as long as the game state is neither a win nor a draw
         while (game.isWinner() = 0)
 
         {
+           // for player 'X' 
            if (turn = 1)
             {
                 let move = player1.makeMove();
+                // if the cell isnt free the loop will restart and turn will not be updated. Player must enter valid move
                 if (game.isCellFree(move))
                 {
                     do game.drawX(move);
@@ -44,8 +48,10 @@ class Main
             }
         }
 
+        // get the kind of end game condition
         let winner = game.isWinner();
 
+        // player 1 has won
         if (winner = 1)
         {
             let instructions = "PLAYER  1   WINS ! ! ! ";
@@ -53,6 +59,7 @@ class Main
             do Output.printString(instructions);
         }
 
+        // player 2 has won
         if (winner = 2)
         {
             let instructions = "PLAYER  2   WINS ! ! ! ";
@@ -60,6 +67,7 @@ class Main
             do Output.printString(instructions);           
         }
 
+        // a draw
         if (winner = -1)
         {
             let instructions = "THE  GAME  IS  A  DRAW ! ! ! ";
